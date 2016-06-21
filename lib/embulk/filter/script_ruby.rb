@@ -23,7 +23,7 @@ module Embulk
 
       def init
         # initialization code:
-        @script = task['path']
+        @script = task['script']
        
         @out_map = {}
         out_schema.each do | e |
