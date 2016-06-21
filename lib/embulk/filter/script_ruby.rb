@@ -11,22 +11,27 @@ module Embulk
             'columns' => config.param('columns', :array, default: [])
         }
         
-        _columns = []
-        @out_columns_map = {}
-        task['columns'].each do | c |
-          Column.new(nil, c['name'], c['type'].to_sym)
-          @out_columns_map[c['name']] = true
+        c = 0
+        out_columns = task['columns'].map do | e | 
+          col = Column.new(c, e['name'], e['type'].to_sym)
+          c+=1
+	      col
         end
-
-        out_columns = _columns
-
+        
         yield(task, out_columns)
       end
 
       def init
         # initialization code:
         @path = task['path']
-        load_script_file(@path)
+       
+        @out_map = {}
+        out_schema.each do | e |
+          @out_map[e['name']] = true
+        end
+        
+        $:.unshift "./script/"
+        require @path
       end
 
       def close
@@ -36,10 +41,19 @@ module Embulk
         # filtering code:
         page.each do |record|
           result = {}
-          filter(hash_record(record)).each do |key, value|
-            result[key] = value if @out_columns_map.has_key?(key)
+          begin
+            h = Hash[in_schema.names.zip(record)]
+            filter(h).each do | key, value |
+              result[key] = value if @out_map.has_key?(key)
+            end
+          rescue => e
+            raise e.to_s + " backtrace: " + e.backtrace.to_s 
           end
-          page_builder.add(record)
+          out_record = []
+          out_schema.sort_by{|e| e['index']}.each do | e |
+            out_record << result[e['name']]
+          end
+          page_builder.add(out_record)
         end
       end
 
@@ -48,16 +62,6 @@ module Embulk
       end
     end
     
-    private
     
-    def load_script_file(path)
-        raise ConfigError, "Ruby script file does not exist: #{path}" unless File.exist?(path)
-	    eval "self.instance_eval do;" + IO.read(path) + ";end"
-    end
-
-    def hash_record(record)
-      Hash[in_schema.names.zip(record)]
-    end
-
   end
 end
