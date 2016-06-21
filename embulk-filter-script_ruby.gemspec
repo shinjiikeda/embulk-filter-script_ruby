@@ -7,10 +7,9 @@ Gem::Specification.new do |spec|
   spec.description   = "Script Ruby"
   spec.email         = ["gm.ikeda@gmail.com"]
   spec.licenses      = ["MIT"]
-  # TODO set this: spec.homepage      = "https://github.com/gm.ikeda/embulk-filter-script_ruby"
+  spec.homepage      = "https://github.com/shinjiikeda/embulk-filter-script_ruby"
 
   spec.files         = `git ls-files`.split("\n") + Dir["classpath/*.jar"]
-  #spec.files         = `git ls-files -z`.split("\x0").reject { |f| f.match(%r{^(test|spec|features)/}) }
   spec.test_files    = spec.files.grep(%r{^(test|spec)/})
   spec.require_paths = ["lib"]
 
