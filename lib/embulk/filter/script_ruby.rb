@@ -7,7 +7,7 @@ module Embulk
       def self.transaction(config, in_schema, &control)
         # configuration code:
         task = {
-            'path'  => config.param('path', :string),
+            'script'  => config.param('script', :string),
             'columns' => config.param('columns', :array, default: [])
         }
         
@@ -23,7 +23,7 @@ module Embulk
 
       def init
         # initialization code:
-        @path = task['path']
+        @script = task['path']
        
         @out_map = {}
         out_schema.each do | e |
@@ -31,7 +31,7 @@ module Embulk
         end
         
         $:.unshift "./script/"
-        require @path
+        require @script
       end
 
       def close
