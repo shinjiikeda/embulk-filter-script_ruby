@@ -26,6 +26,18 @@ filters:
 
 script ファイルは./script/ 以下に置く
 
+```ruby
+class FilterHoge
+  def initialize()
+    ...
+  end
+  
+  def filter(record)
+    ...
+    record
+  end
+```
+
 ## Build
 
 ```
