@@ -8,19 +8,35 @@ TODO: Write short description here and embulk-filter-script_ruby.gemspec file.
 
 ## Configuration
 
-- **option1**: description (integer, required)
-- **option2**: description (string, default: `"myvalue"`)
-- **option3**: description (string, default: `null`)
+- **script**: script file (string, required)
+- **class**: class name (string, required)
+- **columns**: output columns (array, default: `null`)
 
 ## Example
 
 ```yaml
 filters:
   - type: script_ruby
-    option1: example1
-    option2: example2
+    script: filter_hoge
+    class: FilterHoge
+    columns:
+      - {name: id, type: string}
+      ...
 ```
 
+script ファイルは./script/ 以下に置く
+
+```ruby
+class FilterHoge
+  def initialize()
+    ...
+  end
+  
+  def filter(record)
+    ...
+    record
+  end
+```
 
 ## Build
 
