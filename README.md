@@ -26,6 +26,7 @@ filters:
 
 script ファイルは./script/ 以下に置く
 
+filter_hoge.rb
 ```ruby
 class FilterHoge
   def initialize()
@@ -36,6 +37,7 @@ class FilterHoge
     ...
     record
   end
+end
 ```
 
 ## Build
