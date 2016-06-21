@@ -42,20 +42,17 @@ module Embulk
       def add(page)
         # filtering code:
         page.each do |record|
-          result = {}
           begin
             h = Hash[in_schema.names.zip(record)]
-            @filter_class.filter(h).each do | key, value |
-              result[key] = value if @out_map.has_key?(key)
+            result = @filter_class.filter(h)
+            out_record = []
+            out_schema.sort_by{|e| e['index']}.each do | e |
+              out_record << result[e['name']] if result.has_key?(e['name'])
             end
+            page_builder.add(out_record) if out_record.size > 0
           rescue => e
             raise e.to_s + " backtrace: " + e.backtrace.to_s 
           end
-          out_record = []
-          out_schema.sort_by{|e| e['index']}.each do | e |
-            out_record << result[e['name']]
-          end
-          page_builder.add(out_record)
         end
       end
 
