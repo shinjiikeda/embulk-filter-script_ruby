@@ -8,6 +8,7 @@ module Embulk
         # configuration code:
         task = {
             'script'  => config.param('script', :string),
+            'class'  => config.param('class', :string),
             'columns' => config.param('columns', :array, default: [])
         }
         
@@ -32,6 +33,7 @@ module Embulk
         
         $:.unshift "./script/"
         require @script
+        @filter_class = Object.const_get(task['class']).new()
       end
 
       def close
@@ -43,7 +45,7 @@ module Embulk
           result = {}
           begin
             h = Hash[in_schema.names.zip(record)]
-            filter(h).each do | key, value |
+            @filter_class.filter(h).each do | key, value |
               result[key] = value if @out_map.has_key?(key)
             end
           rescue => e
