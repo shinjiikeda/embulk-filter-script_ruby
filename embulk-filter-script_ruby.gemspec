@@ -1,7 +1,7 @@
 
 Gem::Specification.new do |spec|
   spec.name          = "embulk-filter-script_ruby"
-  spec.version       = "0.1.0"
+  spec.version       = "0.1.1"
   spec.authors       = ["shinjiikeda"]
   spec.summary       = "Script Ruby filter plugin for Embulk"
   spec.description   = "Script Ruby"

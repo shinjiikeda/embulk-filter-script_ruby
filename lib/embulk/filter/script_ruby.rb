@@ -31,7 +31,6 @@ module Embulk
           @out_map[e['name']] = true
         end
         
-        $:.unshift "./script/"
         require @script
         @filter_class = Object.const_get(task['class']).new()
       end

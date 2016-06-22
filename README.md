@@ -24,8 +24,6 @@ filters:
       ...
 ```
 
-script ファイルは./script/ 以下に置く
-
 filter_hoge.rb
 ```ruby
 class FilterHoge
@@ -38,6 +36,10 @@ class FilterHoge
     record
   end
 end
+```
+
+```
+$ embulk run -I lib config.yml
 ```
 
 ## Build
