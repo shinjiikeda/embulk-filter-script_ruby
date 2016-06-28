@@ -46,7 +46,7 @@ module Embulk
             result = @filter_class.filter(h)
             out_record = []
             out_schema.sort_by{|e| e['index']}.each do | e |
-              out_record << result[e['name']] if result.has_key?(e['name'])
+              out_record << result.has_key?(e['name']) ? result[e['name']] : nil
             end
             page_builder.add(out_record) if out_record.size > 0
           rescue => e
