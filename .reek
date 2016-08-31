@@ -5,10 +5,13 @@ TooManyStatements:
   enabled: true
   exclude:
   - initialize
-  max_statements: 10
+  max_statements: 20
 
 NestedIterators:
   max_allowed_nesting: 3
 
 DuplicateMethodCall:
   max_calls: 2
+
+UncommunicativeVariableName:
+  enabled: false
