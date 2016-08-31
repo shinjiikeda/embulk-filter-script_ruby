@@ -15,3 +15,6 @@ DuplicateMethodCall:
 
 UncommunicativeVariableName:
   enabled: false
+
+InstanceVariableAssumption:
+  enabled: false
